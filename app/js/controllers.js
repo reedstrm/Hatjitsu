@@ -30,6 +30,9 @@ function MainCtrl($scope, $timeout) {
     $scope.logoState = '';
     $scope.bodyState = '';
   });
+  $scope.$on('set room title', function (evnt, title) {
+    $scope.roomTitle = 'title';
+  });
 
   $scope.$on('show message', function (evnt, msg) {
     $scope.message = msg;
@@ -258,6 +261,7 @@ function average(data){
     $scope.connections = roomObj.connections;
     $scope.humanCount = $scope.connections.length;
     $scope.cardPack = roomObj.cardPack;
+    $scope.roomTitle = roomObj.roomTitle;
     $scope.forcedReveal = roomObj.forcedReveal;
     $scope.cards = chooseCardPack($scope.cardPack);
 
@@ -305,6 +309,14 @@ function average(data){
     socket.on('card pack set', function () {
       $scope.$emit('show message', 'Card pack changed...');
       // console.log("on card pack set");
+      // console.log("emit room info", { roomUrl: $scope.roomId });
+      this.emit('room info', { roomUrl: $scope.roomId }, function (response) {
+        processMessage(response, refreshRoomInfo);
+      });
+    });
+    socket.on('room title set', function () {
+      $scope.$emit('show message', 'Current vote title changed...');
+      // console.log("on room title set");
       // console.log("emit room info", { roomUrl: $scope.roomId });
       this.emit('room info', { roomUrl: $scope.roomId }, function (response) {
         processMessage(response, refreshRoomInfo);
@@ -423,6 +435,12 @@ function average(data){
   $scope.toggleVoter = function () {
     // console.log("emit toggle voter", { roomUrl: $scope.roomId, voter: $scope.voter, sessionId: $scope.sessionId });
     socket.emit('toggle voter', { roomUrl: $scope.roomId, voter: $scope.voter, sessionId: $scope.sessionId }, function (response) {
+      processMessage(response);
+    });
+  };
+
+  $scope.setRoomTitle = function () {
+    socket.emit('set room title', { roomUrl: $scope.roomId, roomTitle: $scope.roomTitle }, function (response) {
       processMessage(response);
     });
   };

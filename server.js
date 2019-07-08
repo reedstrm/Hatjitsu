@@ -236,4 +236,16 @@ io.sockets.on('connection', function (socket) {
     }
   });
 
+  socket.on('set room title', function (data, callback) {
+    statsSocketMessagesReceived++;
+    // console.log("on set room title for " + data.roomUrl, socket.id, data);
+    var room = lobby.getRoom(data.roomUrl);
+    if (room.error) {
+      callback( { error: room.error });
+    } else {
+      room.setRoomTitle(data);
+      callback( {} );
+    }
+  });
+
 });

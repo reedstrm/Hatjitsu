@@ -1,6 +1,10 @@
 <div ng-init="configureRoom()">
-  <p class="roomNumber">Room: {{roomId}}</p>
-
+    <p class="roomNumber">Room: {{roomId}}</p>
+  <form ng-submit="setRoomTitle()">
+      <label class="currentVote">Current vote: <input class="roomTitle" type="text" ng-model="roomTitle" name="roomTitle" value="{{roomTitle}}"></input>
+          <input type="submit" id="submit" value="Change" />
+    </label>
+  </form>
   <section class="cardPanel" >
     <div class="row cardPanel-meta">
       <div class="span2 subheading">

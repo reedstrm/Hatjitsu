@@ -56,7 +56,7 @@ a:focus {
     position: relative;
     z-index: 3;
     padding-top: 8px;
-    padding-bottom: 67px; /* allow for absolutely positioned mountain */
+    padding-bottom: 87px; /* allow for absolutely positioned mountain */
     zoom: 1;
     border: 1px solid #B9AAA7;
     border-width: 0 1px;
@@ -153,6 +153,13 @@ a:focus {
     z-index: 4;
     top: 4.3em;
     left: 7.7em;
+  }
+
+  .currentVote {
+    width: 100%;
+  }
+  .roomTitle {
+    width: 75%;
   }
 
 /*
