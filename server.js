@@ -167,7 +167,7 @@ io.sockets.on('connection', function (socket) {
     }
   });
 
-  socket.on('set card pack', function (data, cardPack) {
+  socket.on('set card pack', function (data, callback) {
     statsSocketMessagesReceived++;
     // console.log("on set card pack " + data.cardPack + " for " + data.roomUrl, socket.id, data);
     var room = lobby.getRoom(data.roomUrl);
@@ -244,6 +244,19 @@ io.sockets.on('connection', function (socket) {
       callback( { error: room.error });
     } else {
       room.setRoomTitle(data);
+      callback( {} );
+    }
+  });
+
+
+  socket.on('set vote history', function (data, callback) {
+    statsSocketMessagesReceived++;
+    // console.log("on set room title for " + data.roomUrl, socket.id, data);
+    var room = lobby.getRoom(data.roomUrl);
+    if (room.error) {
+      callback( { error: room.error });
+    } else {
+      room.setVoteHistory(data);
       callback( {} );
     }
   });

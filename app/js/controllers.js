@@ -31,7 +31,10 @@ function MainCtrl($scope, $timeout) {
     $scope.bodyState = '';
   });
   $scope.$on('set room title', function (evnt, title) {
-    $scope.roomTitle = 'title';
+    $scope.roomTitle = title;
+  });
+  $scope.$on('set vote history', function (evnt, history) {
+    $scope.voteHistory = history;
   });
 
   $scope.$on('show message', function (evnt, msg) {
@@ -162,6 +165,10 @@ function average(data){
     $scope.forceRevealDisable = (!$scope.forcedReveal && ($scope.votes.length < $scope.voterCount || $scope.voterCount === 0)) ? false : true;
 
     if ($scope.votes.length === $scope.voterCount || $scope.forcedReveal) {
+      if ($scope.showAdmin) { 
+        $scope.voteHistory.push({title: $scope.roomTitle, average: $scope.votingAverage, stddev: $scope.votingSTDev});
+        socket.emit('set vote history', { roomUrl: $scope.roomId, history: $scope.voteHistory });
+      }
       var uniqVotes = _.chain($scope.votes).pluck('vote').uniq().value().length;
       if (uniqVotes === 1) {
         $scope.$emit('unanimous vote');
@@ -262,6 +269,7 @@ function average(data){
     $scope.humanCount = $scope.connections.length;
     $scope.cardPack = roomObj.cardPack;
     $scope.roomTitle = roomObj.roomTitle;
+    $scope.voteHistory = roomObj.voteHistory;
     $scope.forcedReveal = roomObj.forcedReveal;
     $scope.cards = chooseCardPack($scope.cardPack);
 
@@ -452,6 +460,7 @@ function average(data){
   $scope.voter = true;
   $scope.connections = {};
   $scope.votes = [];
+  $scope.voteHistory = [];
   $scope.cardPack = '';
   $scope.myVote = undefined;
   $scope.voted = haveIVoted();

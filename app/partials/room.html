@@ -80,6 +80,17 @@
       <div class="voting-average">Average: <b>{{votingAverage}}</b> ({{votingSTDev}})</div>
     </div>
 
+    <table>
+        <tr>
+            <th>Vote name</th>
+            <th>Average (std dev)</th>
+        </tr>
+        <tr ng-repeat="voted in voteHistory">
+            <td>{{voted.title}}</td>
+            <td>{{voted.average}} ({{voted.stddev}})</td>
+        </tr>
+    </table>
+
     <div ng-switch on="showAdmin" >
 
       <div ng-switch-when="true">
